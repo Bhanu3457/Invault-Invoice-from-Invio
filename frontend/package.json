@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "bun run copy-version && vite build",
+    "build": "npm run copy-version && vite build",
     "preview": "vite preview",
     "prepare": "svelte-kit sync || echo ''",
-    "sync-keys": " bun extract-i18n-keys.js",
+    "sync-keys": "node extract-i18n-keys.js",
     "copy-version": "cp ../VERSION ./static/VERSION 2>/dev/null || cp VERSION ./static/VERSION 2>/dev/null || echo 'VERSION file not found'",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -19,7 +19,7 @@
     "@sveltejs/adapter-auto": "^7.0.0",
     "@sveltejs/adapter-node": "^5.5.4",
     "@sveltejs/kit": "^2.50.2",
-    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@sveltejs/vite-plugin-svelte": "6.1.3",
     "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^25.5.1",
     "@typescript-eslint/parser": "^8.59.0",
@@ -33,10 +33,11 @@
     "svelte-check": "^4.4.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^6.0.0"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
+    "@sveltejs/adapter-netlify": "^6.0.4",
     "daisyui": "^5.5.19",
     "lucide-svelte": "^0.577.0",
     "qrcode": "^1.5.4"

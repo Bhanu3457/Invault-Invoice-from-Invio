@@ -7,6 +7,9 @@ function candidatePaths(): string[] {
 
   if (Deno.build.os === "windows") {
     list.push(
+      "f:/Invio/Invio/weasyprint/dist/weasyprint.exe",
+      "./weasyprint/dist/weasyprint.exe",
+      "../weasyprint/dist/weasyprint.exe",
       "C:/Program Files/WeasyPrint/weasyprint.exe",
       "C:/Program Files (x86)/WeasyPrint/weasyprint.exe",
     );

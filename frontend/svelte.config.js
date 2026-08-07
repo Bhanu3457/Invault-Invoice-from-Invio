@@ -1,11 +1,15 @@
-import adapter from "@sveltejs/adapter-node";
+import adapterAuto from "@sveltejs/adapter-auto";
+import adapterNode from "@sveltejs/adapter-node";
+
+const useNodeAdapter =
+  process.env.ADAPTER === "node" || process.env.NODE_ENV === "production" && !process.env.VERCEL && !process.env.NETLIFY;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   kit: {
-    adapter: adapter({
-      out: "build",
-    }),
+    adapter: useNodeAdapter
+      ? adapterNode({ out: "build" })
+      : adapterAuto(),
   },
   vitePlugin: {
     dynamicCompileOptions: ({ filename }) =>
@@ -14,3 +18,4 @@ const config = {
 };
 
 export default config;
+

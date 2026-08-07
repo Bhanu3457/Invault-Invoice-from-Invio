@@ -543,6 +543,15 @@ async function resolveWeasyPrintExecutable(): Promise<string | null> {
   } catch {
     // ignore env access errors
   }
+  if (Deno.build.os === "windows") {
+    candidates.push(
+      "f:/Invio/Invio/weasyprint/dist/weasyprint.exe",
+      "./weasyprint/dist/weasyprint.exe",
+      "../weasyprint/dist/weasyprint.exe",
+      "C:/Program Files/WeasyPrint/weasyprint.exe",
+      "C:/Program Files (x86)/WeasyPrint/weasyprint.exe",
+    );
+  }
   candidates.push("weasyprint");
 
   for (const candidate of candidates) {
