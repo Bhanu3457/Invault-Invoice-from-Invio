@@ -40,6 +40,6 @@ export function getVersion(): string {
     console.warn("Failed to read VERSION file:", err);
   }
 
-  cachedVersion = "unknown";
+  cachedVersion = "1.0.0";
   return cachedVersion;
 }
