@@ -122,5 +122,5 @@ if (Number.isNaN(port) || port <= 0) {
   );
 }
 const listenPort = Number.isFinite(port) && port > 0 ? port : 3000;
-console.log(`Starting backend on port ${listenPort}`);
-Deno.serve({ port: listenPort }, app.fetch);
+console.log(`Starting backend on 0.0.0.0:${listenPort}`);
+Deno.serve({ hostname: "0.0.0.0", port: listenPort }, app.fetch);
