@@ -6,7 +6,7 @@ import { adminRoutes } from "./routes/admin.ts";
 import { publicRoutes } from "./routes/public.ts";
 import { authRoutes } from "./routes/auth.ts";
 import { logWeasyPrintAvailability } from "./utils/weasyprint.ts";
-import { ensureEnv, getAdminCredentials, getJwtSecret } from "./utils/env.ts";
+import { getAdminCredentials, getJwtSecret } from "./utils/env.ts";
 
 const SECURE_HEADERS_DISABLED = (Deno.env.get("SECURE_HEADERS_DISABLED") || "").toLowerCase() === "true";
 const HSTS_ENABLED = (Deno.env.get("ENABLE_HSTS") || "").toLowerCase() === "true";
@@ -15,17 +15,23 @@ const CONTENT_SECURITY_POLICY = Deno.env.get("CONTENT_SECURITY_POLICY") ||
 
 const app = new Hono();
 
+// Health check routes (registered FIRST for instant 200 OK responses to Railway probes)
+app.get("/", (c: Context) => c.json({ status: "ok", name: "Invio API" }, 200));
+app.get("/health", (c: Context) => c.json({ status: "ok" }, 200));
+
 // Check credentials in environment
 const { username: adminUsername, password: adminPassword } = getAdminCredentials();
 const secret = getJwtSecret();
 
-// Initialize the database
-await initDatabase();
+// Initialize the database asynchronously so HTTP server opens port 3000 immediately
+initDatabase().then(() => {
+  console.log("Database initialized successfully");
+  logWeasyPrintAvailability();
+}).catch((err) => {
+  console.error("Database initialization error:", err);
+});
 
-await logWeasyPrintAvailability();
-
-// In demo mode, schedule a periodic reset of the database from DEMO_DB_PATH.
-// Writes are allowed between resets.
+// Demo mode scheduler
 try {
   const demoMode = (Deno.env.get("DEMO_MODE") || "").toLowerCase() === "true";
   if (demoMode) {
@@ -33,8 +39,7 @@ try {
     const initial =
       (Deno.env.get("DEMO_RESET_ON_START") || "true").toLowerCase() !== "false";
     if (initial) {
-      // Perform a reset at startup to ensure a pristine state
-      await resetDatabaseFromDemo();
+      resetDatabaseFromDemo().catch(console.error);
     }
     const ms = Math.max(1, Math.floor(hours * 60 * 60 * 1000));
     setInterval(async () => {
@@ -100,27 +105,9 @@ app.route("/api/v1", adminRoutes);
 app.route("/api/v1", publicRoutes);
 app.route("/api/v1", authRoutes);
 
-// Health check
-app.get("/", (c: Context) => c.redirect("/health"));
-
-app.get("/health", (c: Context) => {
-  try {
-    // Light DB check via pragma
-    // If the DB is not initialized, initDatabase() above would have thrown.
-    return c.json({ status: "ok" }, 200);
-  } catch (_e) {
-    return c.json({ status: "error" }, 500);
-  }
-});
-
 // Start the server: allow configuration via BACKEND_PORT or PORT env vars
 const rawPort = Deno.env.get("BACKEND_PORT") || Deno.env.get("PORT");
 const port = rawPort ? parseInt(rawPort, 10) : 3000;
-if (Number.isNaN(port) || port <= 0) {
-  console.warn(
-    `Invalid port in BACKEND_PORT/PORT (${rawPort}), falling back to 3000`,
-  );
-}
 const listenPort = Number.isFinite(port) && port > 0 ? port : 3000;
 console.log(`Starting backend on 0.0.0.0:${listenPort}`);
 Deno.serve({ hostname: "0.0.0.0", port: listenPort }, app.fetch);
