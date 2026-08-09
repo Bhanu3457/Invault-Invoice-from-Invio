@@ -64,17 +64,14 @@
         <div class="navbar-start flex-1">
           <a href="/" class="btn btn-ghost text-lg sm:text-xl">
             <span class="brand-logo inline-flex items-center">
-              <svg class="mr-2 h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 500 500" aria-hidden="true" focusable="false">
-                <path
-                  d="M104.16661834716797,437.5000305175781L104.16661834716797,104.1666488647461C104.16661834716797,81.1548080444336,122.82152557373047,62.50002670288086,145.83335876464844,62.50002670288086L354.1666259765625,62.50002670288086C377.1785888671875,62.50002670288086,395.8333740234375,81.1548080444336,395.8333740234375,104.1666488647461L395.8333740234375,437.5000305175781L333.3333740234375,395.8334045410156L291.6666259765625,437.5000305175781L249.99998474121094,395.8334045410156L208.33335876464844,437.5000305175781L166.66661071777344,395.8334045410156ZM187.49998474121094,145.83340454101562L312.5,145.83340454101562M187.49998474121094,229.16665649414062L312.5,229.16665649414062M270.8333740234375,312.5000305175781L312.5,312.5000305175781"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="41.6667"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+              <svg class="mr-2 h-5 w-5 sm:h-6 sm:w-6 text-primary" viewBox="0 0 500 500" aria-hidden="true" focusable="false">
+                <path d="M 250,50 L 390,110 V 260 C 390,350 250,420 250,420 C 250,420 110,350 110,260 V 110 Z" fill="none" stroke="currentColor" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="185" y="145" width="130" height="160" rx="14" fill="none" stroke="currentColor" stroke-width="24" stroke-linecap="round"/>
+                <line x1="215" y1="190" x2="285" y2="190" stroke="currentColor" stroke-width="20" stroke-linecap="round"/>
+                <line x1="215" y1="230" x2="285" y2="230" stroke="currentColor" stroke-width="20" stroke-linecap="round"/>
+                <circle cx="250" cy="335" r="18" fill="currentColor"/>
               </svg>
-              <span>{t("Invio")}</span>
+              <span class="font-bold tracking-tight">Invault</span>
             </span>
           </a>
         </div>

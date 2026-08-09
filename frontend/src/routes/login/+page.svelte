@@ -14,8 +14,8 @@
   <div class="hero-content w-full max-w-md flex-col">
     <div class="card bg-base-100 border-base-300 w-full shrink-0 border shadow-xl">
       <div class="card-body">
-        <h2 class="mb-2 text-center text-2xl font-semibold">
-          {t("Welcome to Invio")}
+        <h2 class="mb-2 text-center text-2xl fill-current font-bold tracking-tight">
+          Welcome to Invault
         </h2>
         {#if page.data.demoMode == true}
           <div role="alert" class="alert alert-info">
