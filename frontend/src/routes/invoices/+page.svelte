@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ShieldOff, SquarePen } from "lucide-svelte";
+  import { Download, ShieldOff, SquarePen } from "lucide-svelte";
   import { getContext } from "svelte";
 
   let { data } = $props();
@@ -167,6 +167,9 @@
               {t("Updated")}{sortMarker("updatedAt")}
             </button>
           </th>
+          <th class="text-center">
+            {t("Download")}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -217,6 +220,18 @@
               {#if inv.updatedAt}
                 {new Date(inv.updatedAt).toLocaleDateString(numberFormat === "period" ? "de-DE" : "en-US", { year: "numeric", month: "short", day: "numeric" })}
               {/if}
+            </td>
+            <td class="text-center">
+              <a
+                href={`/api/v1/invoices/${inv.id}/pdf`}
+                target="_blank"
+                rel="noreferrer"
+                class="btn btn-ghost btn-xs text-primary gap-1 font-medium hover:bg-primary/10"
+                title={t("Download PDF")}
+              >
+                <Download size={15} />
+                <span class="hidden sm:inline">PDF</span>
+              </a>
             </td>
           </tr>
         {/each}
