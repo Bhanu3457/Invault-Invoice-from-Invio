@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build": "npm run --prefix frontend build",
     "dev:frontend": "npm run --prefix frontend dev -- --port 8000",
     "dev:backend": "deno task --cwd backend dev",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""
