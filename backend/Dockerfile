@@ -37,7 +37,8 @@ RUN if [ -d "/tmp/repo/backend" ]; then cp -r /tmp/repo/backend/* /app/; else cp
 
 RUN mkdir -p /app/data
 
-ENV DATABASE_PATH=/app/data/invio.db \
+ENV PORT=3000 \
+  DATABASE_PATH=/app/data/invio.db \
   WEASYPRINT_BIN=/usr/bin/weasyprint
 
 EXPOSE 3000
