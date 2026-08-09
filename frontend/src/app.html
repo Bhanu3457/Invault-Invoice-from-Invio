@@ -1,35 +1,31 @@
 <!doctype html>
-<html
-  lang="%lang%"
-  data-number-format="%numberFormat%"
-  data-date-format="%dateFormat%"
->
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Invio</title>
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var preferredDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          var fallback = preferredDark ? "invio-dark" : "invio-light";
-          var theme = stored || fallback;
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (_err) {
-          document.documentElement.setAttribute("data-theme", "invio-dark");
-        }
-      })();
-    </script>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    %sveltekit.head%
-  </head>
-  <body
-    data-sveltekit-preload-data="hover"
-    class="bg-base-200 text-base-content min-h-screen"
-  >
-    <div style="display: contents">%sveltekit.body%</div>
-  </body>
+<html lang="%lang%" data-number-format="%numberFormat%" data-date-format="%dateFormat%">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Invio</title>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("theme");
+        var preferredDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        var fallback = preferredDark ? "invio-dark" : "invio-light";
+        var theme = stored || fallback;
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (_err) {
+        document.documentElement.setAttribute("data-theme", "invio-dark");
+      }
+    })();
+  </script>
+  <link rel="icon" href="/favicon.ico" type="image/svg+xml" />
+  %sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover" class="bg-base-200 text-base-content min-h-screen">
+  <div style="display: contents">%sveltekit.body%</div>
+</body>
+
 </html>

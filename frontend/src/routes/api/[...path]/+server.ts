@@ -33,28 +33,41 @@ export const fallback: RequestHandler = async ({ request, url, cookies }) => {
     init.body = request.body;
   }
 
-  const resp = await fetch(backendUrl.toString(), init);
-  const respHeaders = new Headers();
+  try {
+    const resp = await fetch(backendUrl.toString(), init);
+    const respHeaders = new Headers();
 
-  // Read the entire body to avoid proxy stream corruption
-  const buffer = await resp.arrayBuffer();
+    // Read the entire body to avoid proxy stream corruption
+    const buffer = await resp.arrayBuffer();
 
-  // Copy headers from response except those that relate to the original connection's encoding/chunking
-  for (const [k, v] of resp.headers.entries()) {
-    const lowerK = k.toLowerCase();
-    if (lowerK === "content-encoding") continue;
-    if (lowerK === "content-length") continue;
-    if (lowerK === "transfer-encoding") continue;
-    if (lowerK === "connection") continue;
-    respHeaders.set(k, v);
+    // Copy headers from response except those that relate to the original connection's encoding/chunking
+    for (const [k, v] of resp.headers.entries()) {
+      const lowerK = k.toLowerCase();
+      if (lowerK === "content-encoding") continue;
+      if (lowerK === "content-length") continue;
+      if (lowerK === "transfer-encoding") continue;
+      if (lowerK === "connection") continue;
+      respHeaders.set(k, v);
+    }
+
+    if (!respHeaders.has("content-type")) {
+      respHeaders.set("content-type", "application/json; charset=utf-8");
+    }
+
+    return new Response(buffer, {
+      status: resp.status,
+      headers: respHeaders,
+    });
+  } catch (err) {
+    return new Response(
+      JSON.stringify({
+        error: "Backend service unavailable",
+        details: err instanceof Error ? err.message : String(err),
+      }),
+      {
+        status: 503,
+        headers: { "content-type": "application/json; charset=utf-8" },
+      },
+    );
   }
-
-  if (!respHeaders.has("content-type")) {
-    respHeaders.set("content-type", "application/json; charset=utf-8");
-  }
-
-  return new Response(buffer, {
-    status: resp.status,
-    headers: respHeaders,
-  });
 };

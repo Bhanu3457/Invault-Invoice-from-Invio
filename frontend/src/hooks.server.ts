@@ -52,13 +52,13 @@ export const handle: Handle = async ({ event, resolve }) => {
   response.headers.set(
     "Content-Security-Policy",
     `default-src 'none'; ` +
-      `script-src 'self' 'unsafe-inline'; ` +
-      `style-src 'self' 'unsafe-inline'; ` +
-      `img-src 'self' data: blob:; ` +
-      `font-src 'self' https://fonts.gstatic.com; ` +
-      `connect-src 'self'; ` +
-      `frame-src 'self'; ` +
-      `manifest-src 'self';`,
+    `script-src 'self' 'unsafe-inline'; ` +
+    `style-src 'self' 'unsafe-inline'; ` +
+    `img-src 'self' data: blob:; ` +
+    `font-src 'self' https://fonts.gstatic.com; ` +
+    `connect-src 'self'; ` +
+    `frame-src 'self'; ` +
+    `manifest-src 'self';`,
   );
 
   response.headers.set("X-Content-Type-Options", "nosniff");
