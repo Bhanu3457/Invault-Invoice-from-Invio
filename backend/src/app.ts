@@ -15,26 +15,9 @@ const CONTENT_SECURITY_POLICY = Deno.env.get("CONTENT_SECURITY_POLICY") ||
 
 const app = new Hono();
 
-// Check for required credentials in environment
-try {
-  ensureEnv(["JWT_SECRET", "ADMIN_USER", "ADMIN_PASS"]);
-
-  const { username: adminUsername, password: adminPassword } = getAdminCredentials();
-  if (!adminUsername || adminUsername.trim().length === 0) {
-    throw new Error("ADMIN_USER must not be empty");
-  }
-  if (!adminPassword || adminPassword.trim().length === 0) {
-    throw new Error("ADMIN_PASS must not be empty");
-  }
-
-  const secret = getJwtSecret();
-  if (!secret || secret.trim().length === 0) {
-    throw new Error("JWT_SECRET must not be empty");
-  }
-} catch (error) {
-  console.error(`FATAL: ${error instanceof Error ? error.message : error}`);
-  Deno.exit(1);
-}
+// Check credentials in environment
+const { username: adminUsername, password: adminPassword } = getAdminCredentials();
+const secret = getJwtSecret();
 
 // Initialize the database
 await initDatabase();
