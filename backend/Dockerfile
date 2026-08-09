@@ -30,12 +30,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=denoland/deno:bin-2.6.8 /deno /usr/local/bin/deno
 
 WORKDIR /app
-COPY . .
+
+# Copy repo content safely regardless of root vs backend context
+COPY . /tmp/repo
+RUN if [ -d "/tmp/repo/backend" ]; then cp -r /tmp/repo/backend/* /app/; else cp -r /tmp/repo/* /app/; fi && rm -rf /tmp/repo
+
 RUN mkdir -p /app/data
 
-ENV PORT=3000 \
-  DATABASE_PATH=/app/data/invio.db \
+ENV DATABASE_PATH=/app/data/invio.db \
   WEASYPRINT_BIN=/usr/bin/weasyprint
 
 EXPOSE 3000
-CMD ["deno", "task", "start"]
+CMD ["deno", "run", "--allow-read", "--allow-write", "--allow-net", "--allow-env", "--allow-run", "src/app.ts"]
